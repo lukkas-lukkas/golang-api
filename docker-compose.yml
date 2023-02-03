@@ -1,0 +1,8 @@
+version: "3"
+services:
+  api.go-api-rest.dev:
+    build: .
+    image: api.go-api-rest.dev
+    container_name: api.go-api-rest.dev
+    ports:
+      - 9000:8080
