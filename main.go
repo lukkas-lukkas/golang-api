@@ -1,10 +1,18 @@
 package main
 
 import "fmt"
+import uuid "github.com/satori/go.uuid"
 
 type Doctor struct {
 	ID string
 	Name string
+}
+
+func NewDoctor(name string) *Doctor {
+	return &Doctor{
+		ID: uuid.NewV4().String(),
+		Name: name,
+	}
 }
 
 type DoctorList struct {
@@ -16,12 +24,14 @@ func (d *DoctorList) Add(doctor Doctor) {
 }
 
 func main() {
-	doctor := Doctor{}
-	doctor.ID = "123456"
-	doctor.Name = "Lucas Lima"
+	doctor1 := NewDoctor("Lucas Lima")
+
+	doctor2 := NewDoctor("Lucas Oliveira Lima")
 
 	list := DoctorList{}
-	list.Add(doctor)
+	
+	list.Add(*doctor1)
+	list.Add(*doctor2)
 
 	fmt.Println(list)
 }
