@@ -4,5 +4,7 @@ services:
     build: .
     image: api.go-api-rest.dev
     container_name: api.go-api-rest.dev
+    volumes:
+      - .:/go/src/
     ports:
-      - 9000:8080
+      - 8585:8585
