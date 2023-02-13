@@ -13,6 +13,10 @@ func NewTransaction(id string, accountID string, amount float64) (*Transaction, 
 		return nil, errors.New("You can't create transaction with amount greater than 1000")
 	}
 
+	if (amount < 1) {
+		return nil, errors.New("You can't create transaction with amount less than 1")
+	}
+
 	return &Transaction{
 		ID: id,
 		AccountID: accountID,
