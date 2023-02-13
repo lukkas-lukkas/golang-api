@@ -1,5 +1,7 @@
 package domain
 
+import "errors"
+
 type Consumer struct {
 	ID string
 	Balance float64
@@ -12,6 +14,11 @@ func NewConsumer(id string, balance float64) *Consumer {
 	}
 }
 
-func (c *Consumer) Pay(value float64) {
+func (c *Consumer) Pay(value float64) error {
+	if (value > c.Balance) {
+		return errors.New("Value greater than balance for this consumer")
+	}
+
 	c.Balance -= value
+	return nil
 }
