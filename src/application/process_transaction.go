@@ -1,11 +1,11 @@
 package application
 
-import "github.com/lukkas-lukkas/go-api-rest/src/domain"
+import . "github.com/lukkas-lukkas/go-api-rest/src/domain"
 
-func processTransaction(transaction *domain.Transaction, consumer *domain.Consumer) string {
-	error := consumer.Pay(transaction.Amount)
+func processTransaction(transaction *Transaction, consumer *Consumer) string {
+	err := consumer.Pay(transaction.Amount)
 
-	if error == nil {
+	if err == nil {
 		return "APPROVED"
 	}
 

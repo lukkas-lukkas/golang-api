@@ -3,23 +3,23 @@ package domain
 import "errors"
 
 type Transaction struct {
-	ID string
+	ID        string
 	AccountID string
-	Amount float64
+	Amount    float64
 }
 
 func NewTransaction(id string, accountID string, amount float64) (*Transaction, error) {
-	if (amount > 1000) {
-		return nil, errors.New("You can't create transaction with amount greater than 1000")
+	if amount > 1000 {
+		return nil, errors.New("you can't create transaction with amount greater than 1000")
 	}
 
-	if (amount < 1) {
-		return nil, errors.New("You can't create transaction with amount less than 1")
+	if amount < 1 {
+		return nil, errors.New("you can't create transaction with amount less than 1")
 	}
 
 	return &Transaction{
-		ID: id,
+		ID:        id,
 		AccountID: accountID,
-		Amount: amount,
+		Amount:    amount,
 	}, nil
 }
