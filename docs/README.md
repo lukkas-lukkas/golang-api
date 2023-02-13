@@ -9,3 +9,7 @@ Up container
 Run application
 
 `docker exec -it api.go-api-rest.dev go run main.go`
+
+Run tests
+
+`docker exec -it api.go-api-rest.dev go test ./...`
