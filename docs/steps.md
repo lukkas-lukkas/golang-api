@@ -12,3 +12,6 @@
 
 ### 3º Create topic on kafka-ui
 > golang-api_create-course
+
+### 4º Run application
+> docker exec -i api.golang-api.dev go run main.go
