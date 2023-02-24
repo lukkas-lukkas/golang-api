@@ -10,4 +10,5 @@
 
 > create table courses(id varchar(255), name varchar(255), description varchar(255), status varchar(255));
 
-Here we can see "Hello world" cli
+### 3º Create topic on kafka-ui
+> golang-api_create-course
