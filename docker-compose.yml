@@ -1,9 +1,9 @@
 version: "3"
 services:
-  api.go-api-rest.dev:
+  api.golang-api.dev:
     build: .
-    image: api.go-api-rest.dev
-    container_name: api.go-api-rest.dev
+    image: api.golang-api.dev
+    container_name: api.golang-api.dev
     volumes:
       - .:/go/src/
     ports:
