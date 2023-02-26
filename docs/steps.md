@@ -6,7 +6,7 @@
 ### 2º Create table
 > docker exec -it db.golang-api.dev bash
 
-> mysql -uroot -p dev_database
+> mysql --password=root dev_database
 
 > create table courses(id varchar(255), name varchar(255), description varchar(255), status varchar(255));
 

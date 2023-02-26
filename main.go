@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	db, err := sql.Open("mysql", "root:root@tcp(mysql:3306)/dev_database")
+	db, err := sql.Open("mysql", "root:root@tcp(db.golang-api.dev:3306)/dev_database")
 	if err != nil {
 		log.Fatalln(err)
 	}
