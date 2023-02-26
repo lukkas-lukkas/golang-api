@@ -24,7 +24,7 @@ func main() {
 
 	messageChan := make(chan *ckafka.Message)
 	configMap := &ckafka.ConfigMap{
-		"bootstrap.servers":"kafka.golang-api.dev:9098",
+		"bootstrap.servers":"broker:29092",
 		"group.id": "golang-api",
 	}
 

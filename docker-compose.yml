@@ -9,44 +9,42 @@ services:
     ports:
       - 8585:8585
 
-  zookeeper.golang-api.dev:
-    image: wurstmeister/kafka:latest
-    container_name: zookeeper.golang-api.dev
-    networks:
-      - bubble
-    ports:
-      - "2182:2181"
-
-  kafka.golang-api.dev:
-    image: wurstmeister/kafka:latest
-    container_name: kafka.golang-api.dev
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.0
+    hostname: zookeeper
+    container_name: zookeeper
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: kafka.golang-api.dev
-      KAFKA_ADVERTISED_PORT: 9098
-      KAFKA_PORT: 9098
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper.golang-api.dev:2181
-      KAFKA_BROKER_ID: 1
-    networks:
-      - bubble
-    ports:
-      - "9098:9098"
-    depends_on:
-      - zookeeper.golang-api.dev
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
 
-  kafka-ui.golang-api.dev:
-    container_name: kafka-ui.golang-api.dev
+  broker:
+    image: confluentinc/cp-kafka:7.3.0
+    container_name: broker
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+  kafka-ui:
+    container_name: kafka-ui
     image: docker.redpanda.com/vectorized/console:v2.1.1
     restart: on-failure
     hostname: kafka-ui
     depends_on:
-      - kafka.golang-api.dev
+      - broker
     ports:
       - "7002:8080"
     environment:
-      KAFKA_BROKERS: "kafka.golang-api.dev:9098"
-    networks:
-      - bubble
-
+      KAFKA_BROKERS: "broker:9092"
+  
   db.golang-api.dev:
     image: mysql:8
     container_name: db.golang-api.dev
@@ -57,11 +55,3 @@ services:
       MYSQL_ROOT_USER: "root"
     ports:
       - 4307:3306
-    volumes:
-      - ./dbdata:/var/lib/mysql/
-    networks:
-      - bubble
-
-networks:
-  bubble:
-    external: true
