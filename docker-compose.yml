@@ -9,41 +9,41 @@ services:
     ports:
       - 8585:8585
 
-  zookeeper:
+  zookeeper.golang-api.dev:
     image: confluentinc/cp-zookeeper:7.3.0
     hostname: zookeeper
-    container_name: zookeeper
+    container_name: zookeeper.golang-api.dev
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
 
-  broker:
+  broker.golang-api.dev:
     image: confluentinc/cp-kafka:7.3.0
-    container_name: broker
+    container_name: broker.golang-api.dev
     ports:
       - "9092:9092"
     depends_on:
-      - zookeeper
+      - zookeeper.golang-api.dev
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker.golang-api.dev:9092,PLAINTEXT_INTERNAL://broker.golang-api.dev:29092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 
-  kafka-ui:
-    container_name: kafka-ui
+  kafka-ui.golang-api.dev:
+    container_name: kafka-ui.golang-api.dev
     image: docker.redpanda.com/vectorized/console:v2.1.1
     restart: on-failure
-    hostname: kafka-ui
+    hostname: kafka-ui.golang-api.dev
     depends_on:
-      - broker
+      - broker.golang-api.dev
     ports:
       - "7002:8080"
     environment:
-      KAFKA_BROKERS: "broker:9092"
+      KAFKA_BROKERS: "broker.golang-api.dev:9092"
   
   db.golang-api.dev:
     image: mysql:8
