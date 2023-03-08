@@ -1,54 +1,18 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"os"
+
+	"github.com/lukkas-lukkas/go-api-rest/src/domain"
+	console "github.com/lukkas-lukkas/go-api-rest/src/ui/console"
 )
-
-type MonitorCommand struct {
-	flagSet *flag.FlagSet
-	tries   int
-	delay   int
-}
-
-func (mc *MonitorCommand) Name() string {
-	return mc.flagSet.Name()
-}
-
-func (mc *MonitorCommand) Init(args []string) error {
-	return mc.flagSet.Parse(args)
-}
-
-func (mc *MonitorCommand) Run() error {
-	fmt.Println("RUN MONITOR")
-	fmt.Println("tries: ", mc.tries)
-	fmt.Println("delay: ", mc.delay)
-	return nil
-}
-
-func NewMonitorCommand() *MonitorCommand {
-	mc := &MonitorCommand{
-		flagSet: flag.NewFlagSet("monitor", flag.ContinueOnError),
-	}
-
-	mc.flagSet.IntVar(&mc.tries, "tries", 5, "Tries to each site")
-	mc.flagSet.IntVar(&mc.delay, "delay", 5, "Delay between tries")
-
-	return mc
-}
-
-type CommandRunner interface {
-	Init([]string) error
-	Run() error
-	Name() string
-}
 
 func main() {
 	args := os.Args[1:]
 
-	commands := []CommandRunner{
-		NewMonitorCommand(),
+	commands := []domain.Command{
+		console.NewMonitorCommand(),
 	}
 
 	if len(args) < 1 {
@@ -61,7 +25,7 @@ func main() {
 	for _, cmd := range commands {
 		if cmd.Name() == subCommand {
 			cmd.Init(os.Args[2:])
-			err := cmd.Run()
+			err := cmd.Exec()
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -69,6 +33,6 @@ func main() {
 		}
 	}
 
-	fmt.Println("ERROR: Command not found: ", subCommand)
+	fmt.Println("ERROR: Command not found:", subCommand)
 	os.Exit(1)
 }
