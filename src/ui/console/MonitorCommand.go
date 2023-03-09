@@ -1,7 +1,11 @@
 package ui_console
 
 import (
+	"bufio"
 	"flag"
+	"io"
+	"os"
+	"strings"
 
 	"github.com/lukkas-lukkas/go-api-rest/src/application"
 )
@@ -32,6 +36,26 @@ func (mc *MonitorCommand) Init(args []string) error {
 }
 
 func (mc *MonitorCommand) Exec() error {
-	application.Monitor([]string{"site", "site2"}, mc.tries, mc.delay)
+	file, err := os.Open("./sites.txt")
+
+	if err != nil {
+		return err
+	}
+
+	reader := bufio.NewReader(file)
+
+	var sites []string
+
+	for {
+		line, err := reader.ReadString('\n')
+		line = strings.TrimSpace(line)
+		sites = append(sites, line)
+
+		if err == io.EOF {
+			break
+		}
+	}
+
+	application.Monitor(sites, mc.tries, mc.delay)
 	return nil
 }
