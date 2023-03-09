@@ -10,6 +10,7 @@ import (
 func commands() []domain.Command {
 	return []domain.Command{
 		console.NewMonitorCommand(),
+		console.NewLoggerCommand(),
 	}
 }
 

@@ -2,7 +2,8 @@ package ui_console
 
 import (
 	"flag"
-	"fmt"
+
+	"github.com/lukkas-lukkas/go-api-rest/src/application"
 )
 
 type MonitorCommand struct {
@@ -31,8 +32,6 @@ func (mc *MonitorCommand) Init(args []string) error {
 }
 
 func (mc *MonitorCommand) Exec() error {
-	fmt.Println("EXEC MONITOR")
-	fmt.Println("tries: ", mc.tries)
-	fmt.Println("delay: ", mc.delay)
+	application.Monitor([]string{"site", "site2"}, mc.tries, mc.delay)
 	return nil
 }
