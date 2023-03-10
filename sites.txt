@@ -1,3 +1,2 @@
-www.test.com.br
-www.alura.com
-www.google.com
+https://www.alura.com
+https://www.google.com

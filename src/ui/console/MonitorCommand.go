@@ -55,6 +55,7 @@ func (mc *MonitorCommand) Exec() error {
 			break
 		}
 	}
+	file.Close()
 
 	application.Monitor(sites, mc.tries, mc.delay)
 	return nil
