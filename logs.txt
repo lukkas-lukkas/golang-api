@@ -1,0 +1,2 @@
+2023-03-11 00:41:01: site: https://www.alura.com, status_code: 200
+2023-03-11 00:41:01: site: https://www.google.com, status_code: 200
