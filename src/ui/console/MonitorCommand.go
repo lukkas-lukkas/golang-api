@@ -11,14 +11,16 @@ import (
 )
 
 type MonitorCommand struct {
+	service application.MonitorService
 	flagSet *flag.FlagSet
 	tries   int
 	delay   int
 }
 
-func NewMonitorCommand() *MonitorCommand {
+func NewMonitorCommand(service *application.MonitorService) *MonitorCommand {
 	mc := &MonitorCommand{
 		flagSet: flag.NewFlagSet("monitor", flag.ContinueOnError),
+		service: *service,
 	}
 
 	mc.flagSet.IntVar(&mc.tries, "tries", 5, "Tries to each site")
@@ -57,6 +59,6 @@ func (mc *MonitorCommand) Exec() error {
 	}
 	file.Close()
 
-	application.Monitor(sites, mc.tries, mc.delay)
+	mc.service.Monitor(sites, mc.tries, mc.delay)
 	return nil
 }

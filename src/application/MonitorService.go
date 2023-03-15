@@ -2,25 +2,31 @@ package application
 
 import (
 	"fmt"
-	"log"
 	"net/http"
-	"os"
+	"strconv"
 	"time"
+
+	"github.com/lukkas-lukkas/go-api-rest/src/domain"
 )
 
-func Monitor(sites []string, tries int, delay int) {
-	for i := 1; i <= tries; i++ {
-		fmt.Println("Try number", i)
-		monitorSites(sites, delay)
+type MonitorService struct {
+	Logger domain.Logger
+}
+
+func NewMonitorService(logger domain.Logger) *MonitorService {
+	return &MonitorService{
+		Logger: logger,
 	}
 }
 
-func monitorSites(sites []string, delay int) {
-	file, err := os.OpenFile("logs.txt", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
-	if err != nil {
-		log.Fatalln("error to create file:", err)
+func (ms *MonitorService) Monitor(sites []string, tries int, delay int) {
+	for i := 1; i <= tries; i++ {
+		fmt.Println("Try number", i)
+		ms.monitorSites(sites, delay)
 	}
+}
 
+func (ms *MonitorService) monitorSites(sites []string, delay int) {
 	for _, site := range sites {
 		response, err := http.Get(site)
 
@@ -28,13 +34,11 @@ func monitorSites(sites []string, delay int) {
 			fmt.Println("error to read site:", site, "Error:", err)
 		}
 
-		time := time.Now().Format("2006-01-02 15:04:05")
-
-		log := fmt.Sprintf("%s: site: %s, status_code: %d\n", time, site, response.StatusCode)
-
-		file.WriteString(log)
+		ms.Logger.Log(map[string]string{
+			"site":        site,
+			"status_code": strconv.Itoa(response.StatusCode),
+		})
 	}
-	defer file.Close()
 
 	time.Sleep(time.Duration(delay) * time.Second)
 }
