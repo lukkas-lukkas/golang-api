@@ -12,6 +12,7 @@ import (
 func commands() []domain.Command {
 	logger := infrastructure.NewFileLogger()
 	monitorService := application.NewMonitorService(logger)
+
 	return []domain.Command{
 		console.NewMonitorCommand(monitorService),
 		console.NewLoggerCommand(),
