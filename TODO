@@ -1,0 +1,5 @@
+Remove open file from MonitorCommand
+
+Create command to show metrics
+- Total success by site
+- Option to select site
